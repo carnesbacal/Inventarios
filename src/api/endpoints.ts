@@ -1,7 +1,7 @@
 // Funciones tipadas para cada endpoint de la API (seccion 5 de la especificacion).
 import { api } from './client'
 import type {
-  Usuario,
+  LoginResponse,
   Producto,
   ProductoLite,
   ProductoCatalogo,
@@ -12,9 +12,9 @@ import type {
   GuardarTraspasoPayload,
 } from './types'
 
-// 5.1 Login
-export function login(email: string, password: string): Promise<Usuario> {
-  return api.post<Usuario>('/login', { email, password })
+// 5.1 Login. Devuelve el usuario y, cuando el backend use Sanctum, tambien `token`.
+export function login(email: string, password: string): Promise<LoginResponse> {
+  return api.post<LoginResponse>('/login', { email, password })
 }
 
 // 5.2 Buscar producto por codigo escaneado (matchea codigo O alterno)

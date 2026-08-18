@@ -1,6 +1,6 @@
 deployment:
   tasks:
     # Ajusta el nombre de la subcarpeta si usas otro (debe existir en el subdominio).
-    - export DEPLOYPATH=/home/carnesbacalcom/public_html/intranet.carnesbacal.com.mx/Inventarios/
+    - export DEPLOYPATH=/home/carnesbacalcom/public_html/intranet.carnesbacal.com.mx/Inventario/
     # Copia la app YA compilada (incluye archivos ocultos como .htaccess).
     - /bin/cp -R dist/. $DEPLOYPATH

@@ -9,6 +9,14 @@ export interface Usuario {
   idPuesto: number
 }
 
+/**
+ * Respuesta de /api/login. Cuando el backend habilite Sanctum devolvera ademas
+ * `token`. Mientras no lo mande, la app funciona igual (compatibilidad hacia atras).
+ */
+export interface LoginResponse extends Usuario {
+  token?: string
+}
+
 /** Producto completo devuelto por GET /api/productos?sucursal_id&codigo. */
 export interface Producto {
   id: number

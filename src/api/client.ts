@@ -1,5 +1,6 @@
 // Cliente HTTP base. Envuelve fetch con manejo uniforme de errores y JSON.
 import { API_BASE } from '../config'
+import { clearSession, loadToken } from '../auth/session'
 
 export class ApiError extends Error {
   status: number
@@ -39,6 +40,9 @@ async function request<T>(
   path: string,
   opts: { query?: Query; body?: unknown } = {},
 ): Promise<T> {
+  // Adjunta el token (Bearer) si existe. Si el backend aun no usa tokens, no estorba.
+  const token = loadToken()
+
   let res: Response
   try {
     res = await fetch(buildUrl(path, opts.query), {
@@ -46,6 +50,7 @@ async function request<T>(
       headers: {
         Accept: 'application/json',
         ...(opts.body !== undefined ? { 'Content-Type': 'application/json' } : {}),
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
       body: opts.body !== undefined ? JSON.stringify(opts.body) : undefined,
     })
@@ -55,6 +60,16 @@ async function request<T>(
   }
 
   const body = await parseBody(res)
+
+  // Token vencido/invalido en una sesion activa: cerrar sesion y volver al login.
+  if (res.status === 401 && localStorage.getItem('inv_session_user')) {
+    clearSession()
+    try {
+      window.location.reload()
+    } catch {
+      /* ignore */
+    }
+  }
 
   if (!res.ok) {
     const message =

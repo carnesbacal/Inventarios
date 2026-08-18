@@ -2,6 +2,7 @@
 import type { Usuario } from '../api/types'
 
 const KEY = 'inv_session_user'
+const TOKEN_KEY = 'inv_token'
 
 export function saveSession(user: Usuario): void {
   localStorage.setItem(KEY, JSON.stringify(user))
@@ -20,6 +21,16 @@ export function loadSession(): Usuario | null {
 
 export function clearSession(): void {
   localStorage.removeItem(KEY)
+  localStorage.removeItem(TOKEN_KEY)
+}
+
+// --- Token de autenticacion (Sanctum). Opcional hasta que el backend lo emita. ---
+export function saveToken(token: string): void {
+  localStorage.setItem(TOKEN_KEY, token)
+}
+
+export function loadToken(): string | null {
+  return localStorage.getItem(TOKEN_KEY)
 }
 
 // --- "Recordar mis datos" (comodidad en dispositivo interno) ---

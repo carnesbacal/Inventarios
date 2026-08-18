@@ -1,7 +1,7 @@
 import { createContext, useContext, useMemo, useState, type ReactNode } from 'react'
 import type { Usuario } from '../api/types'
 import { login as apiLogin } from '../api/endpoints'
-import { clearSession, loadSession, saveSession } from './session'
+import { clearSession, loadSession, saveSession, saveToken } from './session'
 
 interface AuthState {
   user: Usuario | null
@@ -20,6 +20,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       async signIn(email, password) {
         const u = await apiLogin(email, password)
         saveSession(u)
+        if (u.token) saveToken(u.token) // Sanctum (cuando el backend lo emita)
         setUser(u)
         return u
       },
