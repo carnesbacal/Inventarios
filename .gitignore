@@ -1,0 +1,11 @@
+node_modules
+dist-ssr
+*.local
+.DS_Store
+.env
+
+# Respaldos / temporales locales (no se versionan)
+_to_delete/
+
+# NOTA: 'dist/' SI se versiona a proposito: cPanel no compila,
+# el deploy copia la carpeta dist ya construida (ver .cpanel.yml).

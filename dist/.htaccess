@@ -1,0 +1,31 @@
+# Configuracion para servir la PWA en Apache / cPanel.
+# Este archivo se copia tal cual a dist/ en cada `npm run build`.
+# Con HashRouter + rutas relativas NO se necesita reescritura a index.html:
+# la app funciona en cualquier subcarpeta (p. ej. /inventario/) sin mas.
+
+# --- Forzar HTTPS (la camara del navegador lo exige) ---
+# Si el subdominio ya sirve todo por HTTPS, puedes borrar este bloque.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} off
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# --- Tipo MIME de WebAssembly (motor del escaner) ---
+<IfModule mod_mime.c>
+  AddType application/wasm .wasm
+</IfModule>
+
+# --- Cache de assets con hash (seguro cachear a largo plazo) ---
+<IfModule mod_headers.c>
+  <FilesMatch "\.(js|css|woff2|png|svg)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  # El HTML y el service worker NO se cachean, para recibir actualizaciones.
+  <FilesMatch "\.(html)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+  <FilesMatch "(sw\.js|registerSW\.js|manifest\.webmanifest)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>

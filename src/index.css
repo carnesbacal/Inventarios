@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #eef1f6;
+  color: #0f172a;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: contain;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Evita zoom por doble-tap en iOS y mantiene inputs legibles (>=16px). */
+input,
+select,
+button,
+textarea {
+  font-size: 16px;
+}
+
+/* Linea de escaneo que recorre toda la pantalla de la camara. */
+@keyframes scanline {
+  0% {
+    top: 6%;
+  }
+  50% {
+    top: 94%;
+  }
+  100% {
+    top: 6%;
+  }
+}
+.scanline {
+  animation: scanline 2.2s ease-in-out infinite;
+}
